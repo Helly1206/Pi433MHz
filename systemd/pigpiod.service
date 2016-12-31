@@ -1,0 +1,11 @@
+# pigpiod - daemon for pigpio
+
+[Unit]
+Description=pigpiod (Raspberry Pi GPIO daemon)
+
+[Service]
+Type=forking
+ExecStart=/usr/bin/pigpiod
+
+[Install]
+WantedBy=multi-user.target

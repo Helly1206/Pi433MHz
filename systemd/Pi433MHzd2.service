@@ -1,0 +1,12 @@
+# Pi433MHzd - daemon for Pi433MHz
+
+[Unit]
+Description=Pi433MHzd (Raspberry Pi 433 MHz receiver/ transmitter daemon)
+
+[Service]
+Type=forking
+ExecStart=/usr/bin/Pi433MHzd
+KillSignal=SIGINT
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,4 @@
+[B]0.80[/B]
+- Initial release
+- IO/ software working correctly
+- Not tested with real hardware yet

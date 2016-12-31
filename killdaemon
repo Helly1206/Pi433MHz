@@ -1,0 +1,11 @@
+#!/bin/bash
+PID=$(pgrep Pi433MHzd)
+
+if [[ !  -z  $PID ]]; then
+	kill -SIGINT $PID
+	echo "Pi433MHzd with pid $PID killed"
+else
+  echo "No Pi433MHzd running"
+fi
+
+
