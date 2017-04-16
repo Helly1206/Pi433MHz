@@ -23,6 +23,9 @@
 #define STR_TXREPEATS  	"TXREPEATS"
 #define STR_TXGPIO     	"TXGPIO"
 #define STR_TXQUEUE    	"TXQUEUE"
+#define STR_PLLCHARGE   "PLLCHARGE"
+#define STR_TXRXGPIO    "TXRXGPIO"
+#define STR_ENABLEGPIO  "ENABLEGPIO"
 
 #define STR_OFF		   	"off"
 #define STR_ECHO	   	"echo"
@@ -48,7 +51,7 @@
 #define LOG_NORMAL	   	1
 #define LOG_DEBUG	   	2
 
-#define TRIMCHARS " \t\n\r\f\v"
+#define TRIMCHARS       " \t\n\r\f\v"
 #define MAX_LINE    	100
 #define CFG_DEF_PATH   	"/etc/"
 #define CFG_DEF_LOG     1
@@ -62,6 +65,9 @@
 #define CFG_DEF_TXRPTS  4
 #define CFG_DEF_TXGPIO  2
 #define CFG_DEF_TXQ     5
+#define CFG_DEF_PLLCH   0
+#define CFG_DEF_TRXGPIO 27
+#define CFG_DEF_ENAGPIO 22
 
 #define PER_DEF_RAW     320
 #define PER_DEF_ACTION  190
@@ -93,6 +99,9 @@ class Config {
 		uint8_t TxRepeats;
 		uint8_t TxGpio;
 		uint8_t TxQueue;
+		uint8_t PllCharge;
+		uint8_t TxRxGpio;
+		uint8_t EnableGpio;
 	private:
 		void SetDefaults();
 		std::string& trim(std::string& s, const char* t = TRIMCHARS);

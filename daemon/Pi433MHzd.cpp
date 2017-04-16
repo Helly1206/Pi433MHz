@@ -11,6 +11,7 @@
 
 #include "RemoteTransmitter.h"
 #include "RemoteReceiver.h"
+#include "RemoteControl.h"
 #include "DeviceTransmitter.h"
 #include "DeviceReceiver.h"
 #include "config.h"
@@ -181,6 +182,7 @@ int Pi433MHzd::Entry() {
 	}
 
 	// Init devices
+	if (res == RES_OK) res = InitRemoteControl();
 	if (res == RES_OK) res = InitRxDevice();
 	if (res == RES_OK) res = InitTxDevice();
 
@@ -192,6 +194,10 @@ int Pi433MHzd::Exit() {
 	msgs->XqMsg->qset();
 	pthread_join(pthServer, NULL);
 	usleep(100000);
+
+	if (Control != NULL) {
+		Control->disable();
+	}
 
 	pigpio_stop(pi);
 
@@ -241,6 +247,21 @@ void Pi433MHzd::sig_handler(int signo) {
     	qmsg::qset_();
     }    
 }
+
+int Pi433MHzd::InitRemoteControl() {
+	int res = RES_OK;
+
+	Control = new RemoteControl(pi, config->EnableGpio, config->TxRxGpio, (config->PllCharge > 0));
+	if (Control != NULL) {
+		Logger::Log(LOG_NOTICE,"Remote Control initialized");
+	} else {
+		Logger::Log(LOG_ERROR,"Error initializing Remote Control");
+		res = RES_NOK;
+	}
+
+	return (res);
+}
+
 
 int Pi433MHzd::InitTxDevice() {
 	int res = RES_OK;
@@ -389,6 +410,7 @@ int Pi433MHzd::TxTransmit(string data) {
 	int codes[MAXFMTSIZE];
 
 	if (!config->RxEcho) RxEnable(false);
+	TxRx(true);
 
 	switch (config->TxDevice) {
 		case X_ECHO:
@@ -436,6 +458,7 @@ int Pi433MHzd::TxTransmit(string data) {
 	}
 
 	if (!config->RxEcho) RxEnable(true);
+	TxRx(false);
 
 	return (res);
 }
@@ -517,6 +540,16 @@ int Pi433MHzd::RxEnable(bool ena) {
 		RxDev->disable();
 	}
 	return (res);
+}
+
+void Pi433MHzd::TxRx(bool Tx) {
+	if (Control != NULL) {
+		if (Tx) {
+			Control->Tx();
+		} else {
+			Control->Rx();
+		}
+	}
 }
 
 int main(int argc, char **argv) {

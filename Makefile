@@ -5,6 +5,7 @@ SONAME  = libPi433MHz.so
 INC     = -Iinc/ -Idaemon/
 SOSRC   = src/RemoteReceiver.cpp \
           src/RemoteTransmitter.cpp \
+          src/RemoteControl.cpp \
           src/DeviceReceiver.cpp \
           src/DeviceTransmitter.cpp
 DMNSRC  = daemon/Pi433MHzd.cpp \

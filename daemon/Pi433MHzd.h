@@ -45,17 +45,20 @@ class Pi433MHzd {
 		static void RxCallback(unsigned long receivedCode, unsigned int period);
 		static void EchoCallback(std::string receivedData);
 	private:
+		int InitRemoteControl();
 		int InitTxDevice();
 		int InitRxDevice();
 		int TxTransmit(std::string data);
 		int RxReceive(std::string &data);
 		int RxEnable(bool ena);
+		void TxRx(bool Tx);
 		Logger *logger;
 		Config *config;
 		Messages *msgs;
 		pthread_t pthServer;
 		void *RxDevice;
 		void *TxDevice;
+		RemoteControl *Control;
 		int pi;
 };
 

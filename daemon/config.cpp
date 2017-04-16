@@ -79,6 +79,9 @@ void Config::PrintConfig() {
 	Logger::Log(LOG_NOTICE,"%s = %d",STR_TXREPEATS,TxRepeats);
 	Logger::Log(LOG_NOTICE,"%s = %d",STR_TXGPIO,TxGpio);
 	Logger::Log(LOG_NOTICE,"%s = %d",STR_TXQUEUE,TxQueue);
+    Logger::Log(LOG_NOTICE,"%s = %d",STR_PLLCHARGE,PllCharge);
+    Logger::Log(LOG_NOTICE,"%s = %d",STR_TXRXGPIO,TxRxGpio);
+    Logger::Log(LOG_NOTICE,"%s = %d",STR_ENABLEGPIO,EnableGpio);
 }
 
 void Config::SetDefaults() {
@@ -96,6 +99,9 @@ void Config::SetDefaults() {
     TxRepeats = CFG_DEF_TXRPTS;
     TxGpio = CFG_DEF_TXGPIO;
     TxQueue = CFG_DEF_TXQ;
+    PllCharge = CFG_DEF_PLLCH;
+    TxRxGpio = CFG_DEF_TRXGPIO;
+    EnableGpio = CFG_DEF_ENAGPIO;
 }
 
 void Config::ParseLine(string s) {
@@ -150,6 +156,12 @@ void Config::StoreSetting(string Param, string Value) {
         TxGpio = (uint8_t)atoi(Value.c_str());
     } else if (Param == STR_TXQUEUE) {
         TxQueue = (uint8_t)atoi(Value.c_str());
+    } else if (Param == STR_PLLCHARGE) {
+        PllCharge = (uint8_t)atoi(Value.c_str());
+    } else if (Param == STR_TXRXGPIO) {
+        TxRxGpio = (uint8_t)atoi(Value.c_str());
+    } else if (Param == STR_ENABLEGPIO) {
+        EnableGpio = (uint8_t)atoi(Value.c_str());
     }
 
     //printf("Param: '%s', Value: '%s'\n",Param.c_str(),Value.c_str());
