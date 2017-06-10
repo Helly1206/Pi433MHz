@@ -12,6 +12,7 @@
 
 #include <stdint.h>
 #include <pigpiod_if2.h>
+//#include <iostream>
 #include "RemoteReceiver.h"
 
 /************
@@ -85,6 +86,7 @@ void RemoteReceiver::interruptHandler(int /*pi*/, unsigned int /*gpio*/, unsigne
 			max1Period=period*16/10;
 			min3Period=period*23/10;
 			max3Period=period*37/10;
+			//std::cout << "sync:" << period << "," << level << std::endl;
 		} 
 		else {
 			return;
@@ -92,14 +94,17 @@ void RemoteReceiver::interruptHandler(int /*pi*/, unsigned int /*gpio*/, unsigne
 	} else if (_state<48) { // Decoding message
 		// bit part durations can ONLY be 1 or 3 periods.
 		if (duration>=min1Period && duration<=max1Period) {
+			//std::cout << "1p:" << duration << "," << level << std::endl;
 			//bitClear(receivedBit,_state%4);
 			receivedBit &= ~((unsigned short)1 << (_state%4)); // Note: this sets the bits in reversed order! Correct order would be: 3-(_state%4), but that's overhead we don't want.
 		} 
 		else if (duration>=min3Period && duration<=max3Period) {
 			//bitSet(receivedBit,_state%4);
+			//std::cout << "3p:" << duration << "," << level << std::endl;
 			receivedBit |= ((unsigned short)1 << (_state%4)); // Note: this sets the bits in reversed order!
 		} 
 		else { // Otherwise the entire sequence is invalid
+			//std::cout << "inv:" << duration << "," << level << std::endl;
 			_state=-1;
 			return;
 		}
@@ -140,6 +145,7 @@ void RemoteReceiver::interruptHandler(int /*pi*/, unsigned int /*gpio*/, unsigne
 		}
 
 		// receivedCode is a valid code!
+		//std::cout << "Code: " << receivedCode << "," << previousCode << std::endl;
 		
 		if (receivedCode!=previousCode) {
 			repeats=0;

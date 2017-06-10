@@ -38,7 +38,7 @@ class RemoteReceiver {
 		* @param pi 		Current pi handler from daemon
 		* @param pin 		GPIO pin on rPi that will be used as interrupt.
 							If < 0, you must call interruptHandler() yourself. 
-		* @param minRepeats The number of times the same code must be received in a row before the callback is calles
+		* @param minRepeats The number of times the same code must be received in a row before the callback is called
 		* @param callback Pointer to a callback function, with signature void (*func)(unsigned long, unsigned int). First parameter is the decoded data, the second the period of the timing.
 		*/
 		RemoteReceiver(int pi, short pin, unsigned short minRepeats, RemoteReceiverCallBack callback);

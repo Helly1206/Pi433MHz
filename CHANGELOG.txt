@@ -1,3 +1,7 @@
+[B]0.91[/B]
+- Hardware testing
+- Fixed some typos ...
+
 [B]0.90[/B]
 - Added enable and rx/tx controlfunctionality for Transceiver devices
 - Added PLL chanrge and discharge functionality for Aurel devices (like RTX-MID-xV)

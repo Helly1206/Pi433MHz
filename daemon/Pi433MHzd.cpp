@@ -229,7 +229,7 @@ void Pi433MHzd::RunDaemon() {
 			int res = RxReceive(data);
 			if (res == RES_OK) {
 				if (!msgs->RxbMsg->broadcast(data)) {
-					Logger::Log(LOG_ERROR,"Error broadcasing message\n");	
+					Logger::Log(LOG_ERROR,"Error broadcasting message\n");	
 				}
 				Logger::Log(LOG_DEBUG,"-->%s",data.c_str());
 				//std::cout << "-->" << data << std::endl;
