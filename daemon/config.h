@@ -18,6 +18,7 @@
 #define STR_RXGPIO     	"RXGPIO"
 #define STR_RXQUEUE    	"RXQUEUE"
 #define STR_RXECHO     	"RXECHO"
+#define STR_RXIGNRPTS  	"RXIGNRPTS"
 #define STR_TXDEVICE   	"TXDEVICE"
 #define STR_TXPERIOD   	"TXPERIOD"
 #define STR_TXREPEATS  	"TXREPEATS"
@@ -62,6 +63,7 @@
 #define CFG_DEF_RXRPTS  3
 #define CFG_DEF_RXGPIO  3
 #define CFG_DEF_RXQ     5
+#define CFG_DEF_RXIGNRPTS 500
 #define CFG_DEF_TXRPTS  4
 #define CFG_DEF_TXGPIO  2
 #define CFG_DEF_TXQ     5
@@ -94,6 +96,7 @@ class Config {
 		uint8_t RxGpio;
 		uint8_t RxQueue;
 		uint8_t RxEcho;
+		uint16_t RxIgnoreRepeats;
 		uint8_t TxDevice;
 		uint8_t TxPeriod;
 		uint8_t TxRepeats;

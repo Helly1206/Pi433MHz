@@ -12,7 +12,7 @@
 #define RES_NOK    -1
 #define RES_OFF    -5
 
-#define DAEMON_VERSION 0.8
+#define DAEMON_VERSION 0.92
 
 /* defines */
 class Messages {
@@ -60,6 +60,9 @@ class Pi433MHzd {
 		void *TxDevice;
 		RemoteControl *Control;
 		int pi;
+		static unsigned long lastcmdtime;
+		static unsigned long lastcode;
+		static unsigned int ignoretime;
 };
 
 #endif

@@ -1,4 +1,4 @@
-Pi433MHz: v0.91
+Pi433MHz: v0.92
 
 Software is made under GNU PUBLIC LICENSE (see LICENSE.txt)
 
@@ -12,8 +12,6 @@ Take care this these devices require 5V power, but the IO pins are not 5V compat
 
 This software is made for Rasberry Pi running raspbian (tested on a RPI 3B running Jessie) and is using pigpio for IO.
 pigpio is installed by default on raspian Jessie, so no further action on this interface is required, except for running the daemon (which is explained later).
-
-Pi433MHz v0.90 is not tested on real hardware yet, but the software runs stable and is working on IO level.
 
 Pi433MHz v0.90 added functionality for switching Tx and Rx modes (on transceivers) and enable/ disable hardware. Furthermore PLL charge/ discharge functionality is added for e.g. Aurel (RTX-MID-xV) devices.
 

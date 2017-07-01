@@ -1,3 +1,6 @@
+[B]0.92[/B]
+- Added ignore repeats for Rx signal
+
 [B]0.91[/B]
 - Hardware testing
 - Fixed some typos ...

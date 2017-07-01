@@ -1,5 +1,6 @@
 #include <pigpiod_if2.h>
 #include <cstdio>
+#include <ctime>
 #include <stdlib.h>
 #include <getopt.h>
 #include <signal.h>
@@ -24,6 +25,10 @@
 #define MAXFMTSIZE 3
 
 using namespace std;
+
+unsigned long Pi433MHzd::lastcmdtime = 0;
+unsigned long Pi433MHzd::lastcode = 0;
+unsigned int Pi433MHzd::ignoretime = 0;
 
 void *Pi433MHzd::pthSocketThread(void *vargs) {
 	ThreadArgs *args = (ThreadArgs *)vargs;
@@ -116,13 +121,20 @@ void *Pi433MHzd::pthServerThread(void *vargs) {
 }
 
 void Pi433MHzd::RxCallback(unsigned long receivedCode, unsigned int period) {
+    struct timespec spec;
+	clock_gettime(CLOCK_REALTIME, &spec);
+	unsigned long now = (unsigned long)(spec.tv_sec*1000) + (unsigned long)(spec.tv_nsec / 1.0e6);
 	string data = Logger::format("%lu", receivedCode);
 
-	if (period == 0) { // maybe check period later
+	if ((receivedCode == lastcode) && (now > lastcmdtime) && (now-lastcmdtime < ignoretime)) {
+		Logger::Log(LOG_DEBUG,"Repetition of equal data ingored");
+	} else if (period == 0) { // maybe check period later
 		Logger::Log(LOG_ERROR,"Rx incorrect data");
 	} else if (!smsg::set(data)) {
 		Logger::Log(LOG_ERROR,"Rx queue buffer overflow");
 	}
+	lastcode = receivedCode;
+	lastcmdtime = now;
 }
 
 void Pi433MHzd::EchoCallback(std::string receivedData) {
@@ -155,6 +167,8 @@ int Pi433MHzd::Entry() {
         Logger::Log(LOG_ERROR,"can't catch SIGUSR1");
     else if (signal(SIGINT, sig_handler) == SIG_ERR)
         Logger::Log(LOG_ERROR,"can't catch SIGINT"); 
+
+    ignoretime = config->RxIgnoreRepeats;
 
 	msgs = new Messages();
 	msgs->XqMsg = new qmsg();

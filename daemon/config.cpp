@@ -74,6 +74,7 @@ void Config::PrintConfig() {
 	Logger::Log(LOG_NOTICE,"%s = %d",STR_RXGPIO,RxGpio);
 	Logger::Log(LOG_NOTICE,"%s = %d",STR_RXQUEUE,RxQueue);
 	Logger::Log(LOG_NOTICE,"%s = %d",STR_RXECHO,RxEcho);
+    Logger::Log(LOG_NOTICE,"%s = %d",STR_RXIGNRPTS,RxIgnoreRepeats);
 	Logger::Log(LOG_NOTICE,"%s = %d",STR_TXDEVICE,TxDevice);
 	Logger::Log(LOG_NOTICE,"%s = %d",STR_TXPERIOD,TxPeriod);
 	Logger::Log(LOG_NOTICE,"%s = %d",STR_TXREPEATS,TxRepeats);
@@ -94,6 +95,7 @@ void Config::SetDefaults() {
     RxGpio = CFG_DEF_RXGPIO;
     RxQueue = CFG_DEF_RXQ;
     RxEcho = 0;
+    RxIgnoreRepeats = CFG_DEF_RXIGNRPTS;
     TxDevice = CFG_DEF_X;
     TxPeriod = 0;
     TxRepeats = CFG_DEF_TXRPTS;
@@ -146,6 +148,8 @@ void Config::StoreSetting(string Param, string Value) {
         RxQueue = (uint8_t)atoi(Value.c_str());
     } else if (Param == STR_RXECHO) {
         RxEcho = (uint8_t)atoi(Value.c_str());
+    } else if (Param == STR_RXIGNRPTS) {
+        RxIgnoreRepeats = (uint8_t)atoi(Value.c_str());
     } else if (Param == STR_TXDEVICE) {
         TxDevice = GetDevice(Value);
     } else if (Param == STR_TXPERIOD) {
