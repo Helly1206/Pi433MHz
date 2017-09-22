@@ -1,3 +1,6 @@
+[B]0.93[/B]
+- Small bug fix on Tranceiver devices enable (v0.92 might fail on Raspbian Stretch)
+
 [B]0.92[/B]
 - Added ignore repeats for Rx signal
 
@@ -6,8 +9,8 @@
 - Fixed some typos ...
 
 [B]0.90[/B]
-- Added enable and rx/tx controlfunctionality for Transceiver devices
-- Added PLL chanrge and discharge functionality for Aurel devices (like RTX-MID-xV)
+- Added enable and rx/tx control functionality for Transceiver devices
+- Added PLL charge and discharge functionality for Aurel devices (like RTX-MID-xV)
 
 [B]0.80[/B]
 - Initial release

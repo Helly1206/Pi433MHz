@@ -12,7 +12,10 @@
 
 #include <stdint.h>
 #include <pigpiod_if2.h>
+//#include <iostream>
 #include "RemoteControl.h"
+
+using namespace std;
 
 /************
 * RemoteControl
@@ -27,9 +30,16 @@ RemoteControl::RemoteControl(int pi, short enapin, short txrxpin, bool chargepll
 	_enabled = false;
 	_tx = false;
 
+	//std::cout << "pi:" << pi << std::endl;
+	//std::cout << "enapin:" << enapin << std::endl;
+	//std::cout << "txrxpin:" << txrxpin << std::endl;
+	//std::cout << "chargepll:" << chargepll << std::endl;
+
 	if (enapin > 0) {
 		retval = set_mode(pi, enapin, PI_OUTPUT); // Set GPIOxx as output.
 	}
+
+	//std::cout << "retval 1:" << retval << std::endl;
 
 	if (!retval) {
 		if (enapin > 0) {
@@ -37,21 +47,27 @@ RemoteControl::RemoteControl(int pi, short enapin, short txrxpin, bool chargepll
 		}
 	}
 
+	//std::cout << "retval 2:" << retval << std::endl;
+
 	if (!retval) {
 		if (txrxpin > 0) {
 			retval = set_mode(pi, txrxpin, PI_OUTPUT); // Set GPIOxx as output.
 		}
 	}
 
+	//std::cout << "retval 3:" << retval << std::endl;
+
 	if (!retval) {
 		if (txrxpin > 0) {
 			retval = set_pull_up_down(pi, txrxpin, PI_PUD_OFF); // no pull up/ pull down
 		}
 	}
-	
-	enable();
+
+	//std::cout << "retval 4:" << retval << std::endl;
 
 	_initok = retval? false:true;
+
+	enable();
 }
 
 void RemoteControl::enable() {

@@ -144,11 +144,13 @@ int main() {
 	// END TEST
 
 	//handle signals
-	if (signal(SIGUSR1, sig_handler) == SIG_ERR)
+	if (signal(SIGUSR1, sig_handler) == SIG_ERR) {
         Logger::Log(LOG_ERROR,"can't catch SIGUSR1");
-    else if (signal(SIGINT, sig_handler) == SIG_ERR)
-        Logger::Log(LOG_ERROR,"can't catch SIGINT"); 
-
+	} else {
+		if (signal(SIGINT, sig_handler) == SIG_ERR) {
+        	Logger::Log(LOG_ERROR,"can't catch SIGINT"); 
+    	}
+	}
 	if (pthread_create(&pthServer, NULL, pthServerThread, msgs)) {
 		std::cout << "ERROR Creating thread\n";
 		return(1);

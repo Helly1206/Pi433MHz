@@ -12,7 +12,7 @@
 #define RES_NOK    -1
 #define RES_OFF    -5
 
-#define DAEMON_VERSION 0.92
+#define DAEMON_VERSION 0.93
 
 /* defines */
 class Messages {

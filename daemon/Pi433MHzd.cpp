@@ -273,6 +273,10 @@ int Pi433MHzd::InitRemoteControl() {
 		res = RES_NOK;
 	}
 
+	if (Control->isEnabled() == false) {
+		Logger::Log(LOG_ERROR,"Error enabling Remote Control");
+	}
+
 	return (res);
 }
 
