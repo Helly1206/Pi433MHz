@@ -65,7 +65,7 @@ else
 		echo "Execute 'make all' first"
 		exit
 	else
-		$INSTALL_PROGRAM "./$LIB" $LIBDIR
+		$INSTALL_DATA "./$LIB" $LIBDIR
 	fi
 	if [ ! -e "./$LIBIF" ]
 	then 
@@ -73,7 +73,7 @@ else
 		echo "Execute 'make all' first"
 		exit
 	else
-		$INSTALL_PROGRAM "./$LIBIF" $LIBDIR
+		$INSTALL_DATA "./$LIBIF" $LIBDIR
 	fi
 	for FILE in ./inc/*
 	do

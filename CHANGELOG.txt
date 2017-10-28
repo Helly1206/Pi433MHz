@@ -1,3 +1,6 @@
+[B]0.94[/B]
+- Updated permissions on install
+
 [B]0.93[/B]
 - Small bug fix on Tranceiver devices enable (v0.92 might fail on Raspbian Stretch)
 
