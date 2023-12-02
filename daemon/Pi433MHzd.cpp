@@ -233,7 +233,7 @@ void Pi433MHzd::RunDaemon() {
 				Logger::Log(LOG_DEBUG,"<--%s",data.c_str());
 				//std::cout << "<--" << data << std::endl;
 			} else if (res != RES_OFF) {
-				Logger::Log(LOG_ERROR,"Error transmitting data\n");
+				Logger::Log(LOG_ERROR,"Error transmitting data (incorrect format)\n");
 			}
 		}
 		// Write messages to socket, read from 433MHz device callback
@@ -248,7 +248,7 @@ void Pi433MHzd::RunDaemon() {
 				Logger::Log(LOG_DEBUG,"-->%s",data.c_str());
 				//std::cout << "-->" << data << std::endl;
 			} else if (res != RES_OFF) {
-				Logger::Log(LOG_ERROR,"Error receiving data\n");
+				Logger::Log(LOG_ERROR,"Error receiving data (incorrect format)\n");
 			}
 		}
 		usleep(100000);
@@ -426,13 +426,17 @@ int Pi433MHzd::InitRxDevice() {
 int Pi433MHzd::TxTransmit(string data) {
 	int res = RES_OK;
 	int codes[MAXFMTSIZE];
+	uint8_t doEcho;
+	
+	if (config->CmdEcho) doEcho = 1; else doEcho = 0;
 
 	if (!config->RxEcho) RxEnable(false);
 	TxRx(true);
 
 	switch (config->TxDevice) {
 		case X_ECHO:
-			EchoCallback(data);
+			format::decode(data, codes, 1);
+			doEcho = 1; //EchoCallback(data);
 			break;
 		case X_RAW:
 			if (res == RES_OK) {
@@ -475,6 +479,11 @@ int Pi433MHzd::TxTransmit(string data) {
 			break;
 	}
 
+	if ((res == RES_OK) && (doEcho)) {
+		EchoCallback(data);
+		Logger::Log(LOG_DEBUG,"Echoing transmitted data");
+	}
+
 	if (!config->RxEcho) RxEnable(true);
 	TxRx(false);
 
@@ -483,67 +492,71 @@ int Pi433MHzd::TxTransmit(string data) {
 
 int Pi433MHzd::RxReceive(string &data) {
 	int res = RES_OK;
-	unsigned long udata = strtoul(data.c_str(),NULL,10);
 
-	switch (config->RxDevice) {
-			break;
-		case X_RAW:
-			if (res == RES_OK) {
-				int codes[1];
-				codes[0] = (int)udata;
-				format::encode(data, codes, 1);
-			}
-			break;
-		case X_ACTION:
-			if (res == RES_OK) {
-				ActionReceiver* RxAction = (ActionReceiver*) RxDevice;
-				int codes[3];
-				if (RxAction->signalDecodeFmt(udata, codes, 3)) {
-					format::encode(data, codes, 3);	
-				} else {
-					res = RES_NOK;
+	if (data.find("!") == string::npos) {
+		unsigned long udata = strtoul(data.c_str(),NULL,10);
+
+		switch (config->RxDevice) {
+				break;
+			case X_RAW:
+				if (res == RES_OK) {
+					int codes[1];
+					format::decode(data, codes, 1);
+					codes[0] = (int)udata;
+					format::encode(data, codes, 1);
 				}
-			}
-			break;
-		case X_BLOKKER:
-			if (res == RES_OK) {
-				BlokkerReceiver* RxBlokker = (BlokkerReceiver*) RxDevice;
-				int codes[2];
-				if (RxBlokker->signalDecodeFmt(udata, codes, 2)) {
-					format::encode(data, codes, 2);	
-				} else {
-					res = RES_NOK;
+				break;
+			case X_ACTION:
+				if (res == RES_OK) {
+					ActionReceiver* RxAction = (ActionReceiver*) RxDevice;
+					int codes[3];
+					if (RxAction->signalDecodeFmt(udata, codes, 3)) {
+						format::encode(data, codes, 3);	
+					} else {
+						res = RES_NOK;
+					}
 				}
-			}
-			break;
-		case X_KAKU:
-			if (res == RES_OK) {
-				KaKuReceiver* RxKaKu = (KaKuReceiver*) RxDevice;
-				int codes[3];
-				if (RxKaKu->signalDecodeFmt(udata, codes, 3)) {
-					format::encode(data, codes, 3);	
-				} else {
-					res = RES_NOK;
+				break;
+			case X_BLOKKER:
+				if (res == RES_OK) {
+					BlokkerReceiver* RxBlokker = (BlokkerReceiver*) RxDevice;
+					int codes[2];
+					if (RxBlokker->signalDecodeFmt(udata, codes, 2)) {
+						format::encode(data, codes, 2);	
+					} else {
+						res = RES_NOK;
+					}
 				}
-			}
-			break;
-		case X_ELRO:
-			if (res == RES_OK) {
-				ElroReceiver* RxElro = (ElroReceiver*) RxDevice;
-				int codes[3];
-				if (RxElro->signalDecodeFmt(udata, codes, 3)) {
-					format::encode(data, codes, 3);	
-				} else {
-					res = RES_NOK;
+				break;
+			case X_KAKU:
+				if (res == RES_OK) {
+					KaKuReceiver* RxKaKu = (KaKuReceiver*) RxDevice;
+					int codes[3];
+					if (RxKaKu->signalDecodeFmt(udata, codes, 3)) {
+						format::encode(data, codes, 3);	
+					} else {
+						res = RES_NOK;
+					}
 				}
-			}
-			break;
-		case X_ECHO: // just reply data, no further action
-			break;
-		default: // X_OFF
-			// nothing to be done
-			res = RES_OFF;
-			break;
+				break;
+			case X_ELRO:
+				if (res == RES_OK) {
+					ElroReceiver* RxElro = (ElroReceiver*) RxDevice;
+					int codes[3];
+					if (RxElro->signalDecodeFmt(udata, codes, 3)) {
+						format::encode(data, codes, 3);	
+					} else {
+						res = RES_NOK;
+					}
+				}
+				break;
+			case X_ECHO: // just reply data, no further action
+				break;
+			default: // X_OFF
+				// nothing to be done
+				res = RES_OFF;
+				break;
+		}
 	}
 
 	return (res);

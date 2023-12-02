@@ -69,6 +69,7 @@ void Config::PrintConfig() {
 	Logger::Log(LOG_NOTICE,"%s = %s",STR_LOGFILE,LogFile.c_str());
 	Logger::Log(LOG_NOTICE,"%s = %d",STR_PORT,Port);
 	Logger::Log(LOG_NOTICE,"%s = %d",STR_MAXCLIENTS,MaxClients);
+    Logger::Log(LOG_NOTICE,"%s = %d",STR_CMDECHO,CmdEcho);
 	Logger::Log(LOG_NOTICE,"%s = %d",STR_RXDEVICE,RxDevice);
 	Logger::Log(LOG_NOTICE,"%s = %d",STR_RXREPEATS,RxRepeats);
 	Logger::Log(LOG_NOTICE,"%s = %d",STR_RXGPIO,RxGpio);
@@ -90,6 +91,7 @@ void Config::SetDefaults() {
     LogFile = CFG_DEF_LOGFILE;
     Port = CFG_DEF_PORT;
     MaxClients = CFG_DEF_MAXCL;
+    CmdEcho = CFG_DEF_CECHO;
     RxDevice = CFG_DEF_X;
     RxRepeats = CFG_DEF_RXRPTS;
     RxGpio = CFG_DEF_RXGPIO;
@@ -138,6 +140,8 @@ void Config::StoreSetting(string Param, string Value) {
         Port = (unsigned short)atoi(Value.c_str());
     } else if (Param == STR_MAXCLIENTS) {
         MaxClients = (uint8_t)atoi(Value.c_str());
+    } else if (Param == STR_CMDECHO) {
+        CmdEcho = (uint8_t)atoi(Value.c_str());
     } else if (Param == STR_RXDEVICE) {
         RxDevice = GetDevice(Value);
     } else if (Param == STR_RXREPEATS) {

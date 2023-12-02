@@ -13,6 +13,7 @@
 #define STR_LOGFILE    	"LOGFILE"
 #define STR_PORT       	"PORT"
 #define STR_MAXCLIENTS 	"MAXCLIENTS"
+#define STR_CMDECHO 	"CMDECHO"
 #define STR_RXDEVICE   	"RXDEVICE"
 #define STR_RXREPEATS  	"RXREPEATS"
 #define STR_RXGPIO     	"RXGPIO"
@@ -59,6 +60,7 @@
 #define CFG_DEF_LOGFILE	"/var/log/Pi433HMzd.log"
 #define CFG_DEF_PORT	51721
 #define CFG_DEF_MAXCL	5
+#define CFG_DEF_CECHO   1
 #define CFG_DEF_X       X_RAW
 #define CFG_DEF_RXRPTS  3
 #define CFG_DEF_RXGPIO  3
@@ -91,6 +93,7 @@ class Config {
 		std::string LogFile;
 		unsigned short Port;
 		uint8_t MaxClients;
+		uint8_t CmdEcho;
 		uint8_t RxDevice;
 		uint8_t RxRepeats;
 		uint8_t RxGpio;

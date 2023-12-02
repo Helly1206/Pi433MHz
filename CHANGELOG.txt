@@ -1,3 +1,6 @@
+[B]0.95[/B]
+- Added option for callback of transmitted data
+
 [B]0.94[/B]
 - Updated permissions on install
 

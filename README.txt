@@ -1,4 +1,4 @@
-Pi433MHz: v0.94
+Pi433MHz: v0.95
 
 Software is made under GNU PUBLIC LICENSE (see LICENSE.txt)
 
